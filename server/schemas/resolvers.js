@@ -24,6 +24,7 @@ const resolvers = {
       const profile = await Profile.findOne({ email });
 
       if (!profile) {
+        console.log(email)
         throw new AuthenticationError('No profile with this email found!');
       }
 
