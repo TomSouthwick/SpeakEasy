@@ -13,6 +13,8 @@ const { translate } = require("./utils/translate");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+app.use('/api',require("./routes/speech-to-text-route"));
+
 const limiter = throttle({
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -64,13 +66,6 @@ app.post('/api/translate', limiter, (req, res) => {
 
       res.json(translated)
     })
-
-
-
-
-
-
-
 
 });
 
