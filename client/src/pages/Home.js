@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 
 import Translator from '../components/Translator';
+import ProfileList from '../components/ProfileList/ProfileList';
 
 import { QUERY_PROFILES } from '../utils/queries';
 
@@ -16,19 +17,23 @@ const Home = () => {
           {loading ? (
             <div>Loading...</div>
           ) : (
-            // <h2>hello world</h2>
+            // <div>
+            //   <profile />
+            // </div>
+            // <div>
+            //   <ProfileList profiles={profiles} title={"hello"}/>
+            // </div>
             <div>
                 <Translator />
-            </div>  
-            // <ProfileList
-            //   profiles={profiles}
-            //   title="Here's the current roster of friends..."
-            // />
+            </div> 
           )}
         </div>
       </div>
     </main>
   );
 };
+        /* //   profiles={profiles}
+            //   title="Here's the current roster of friends..."
+            // </div> */
 
 export default Home;

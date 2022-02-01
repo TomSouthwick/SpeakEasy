@@ -6,6 +6,7 @@ export const QUERY_PROFILES = gql`
       _id
       name
       skills
+      email
     }
   }
 `;

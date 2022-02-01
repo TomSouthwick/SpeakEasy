@@ -13,6 +13,12 @@ const { translate } = require("./utils/translate");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+const axios = require("axios").default;
+const { v4: uuidv4 } = require("uuid");
+const subscriptionKey = process.env.TRANSLATE_SUBSCRIPTION_KEY;
+const endpoint = "https://api.cognitive.microsofttranslator.com/";
+const location = "australiaeast";
+
 app.use('/api',require("./routes/speech-to-text-route"));
 
 const limiter = throttle({
@@ -40,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 
-app.post('/api/translate', limiter, (req, res) => {
+app.post('/api/translate', limiter, async (req, res) => {
 
   // validation  
 
@@ -57,20 +63,21 @@ app.post('/api/translate', limiter, (req, res) => {
   // if > 500 char
   // throw an err
 
-  const fromLaaaang = req.body.fromLang;
+  const fromLang = req.body.fromLang;
   const toLang = req.body.toLang;
-  const needToTranslate  = req.body.text;
+  const userText  = req.body.userText;
 
-  translate(fromLaaaang, toLang, needToTranslate)
-    .then((translated) => {
-
-      res.json(translated)
-    })
-
+  try {
+    const result = await translate(fromLang, toLang, userText)
+    res.json(result)
+  } catch(e) {
+    res.json(e)
+  }
+  
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client/src/index.html'));
 });
 
 db.once('open', () => {

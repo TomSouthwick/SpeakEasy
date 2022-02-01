@@ -2,9 +2,15 @@ const Profile = require('./Profile');
 
 module.exports = { Profile };
 
+// 
+// var myobj = {
+//     "objid" : "blahblah",
+//     ""
+
+// }
 
 // model should include
-    // Original phrase
+    // Original phrases
     // translated phrase
     // language to
     // language from

@@ -25,6 +25,27 @@ const profileSchema = new Schema({
       trim: true,
     },
   ],
+  inputPhrases: [
+    {
+      type: String,
+    }
+  ],
+  translatedPhrases: [
+    {
+      type: String,
+    }
+  ],
+  translatedTo: [
+    {
+      type: String,
+    }
+  ],
+  translatedFrom: [
+    {
+      type: String,
+    }
+  ]
+
 });
 
 // set up pre-save middleware to create password

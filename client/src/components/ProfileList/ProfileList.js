@@ -5,7 +5,6 @@ const ProfileList = ({ profiles, title }) => {
   if (!profiles.length) {
     return <h3>No Profiles Yet</h3>;
   }
-
   return (
     <div>
       <h3 className="text-primary">{title}</h3>
@@ -20,6 +19,7 @@ const ProfileList = ({ profiles, title }) => {
                     currently has {profile.skills ? profile.skills.length : 0}{' '}
                     endorsed skill
                     {profile.skills && profile.skills.length === 1 ? '' : 's'}
+                    {profile.email}
                   </span>
                 </h4>
 
