@@ -1,0 +1,31 @@
+<!-- <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="string"></speak>
+<lang xml:lang="string"></lang> -->
+
+
+<!-- var plivo = require('plivo');
+
+var response = plivo.Response();
+
+var speak_body = "Please wait while you call is being transferred.";
+response.addSpeak(speak_body);
+
+var redirect_url = "https://www.foo.com/redirect/";
+response.addRedirect(redirect_url);
+
+console.log(response.toXML());
+
+/*
+Sample Output
+<Response>
+    <Speak>Please wait while you call is being transferred.</Speak>
+    <Redirect>https://www.foo.com/redirect/</Redirect>
+</Response>
+*/
+
+
+/* Code to generate XML to be returned from url at
+redirect_url */
+
+var plivo = require('plivo');
+
+var response = plivo.Response(); -->

@@ -17,7 +17,7 @@
       </tr>
       <tr>
         <td align="right"><a href="https://docs.microsoft.com/azure/cognitive-services/speech-service/get-started" target="_blank">Subscription</a>:</td>
-        <td><input id="subscriptionKey" type="text" size="40" value="568967eff238487d99675a938c17f9bd"></td>
+        <td><input id="subscriptionKey" type="text" size="40" value=""></td>
       </tr>
       <tr>
         <td align="right">Region</td>
@@ -98,19 +98,20 @@
     </table>
   </div>
 
+
   <!-- Speech SDK reference sdk. -->
   <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
 
   <!-- Speech SDK USAGE -->
   <script>
     // status fields and start button in UI
-    var resultsDivs;
-    var startRecognizeOnceAsyncButton;
+    const resultsDivs;
+    const startRecognizeOnceAsyncButton;
 
     // subscription key and region for speech services.
-    var subscriptionKey, serviceRegion, languageTargetOptions;
-    var SpeechSDK;
-    var recognizer;
+    const subscriptionKey, serviceRegion, languageTargetOptions;
+    const SpeechSDK;
+    const recognizer;
 
     document.addEventListener("DOMContentLoaded", function () {
       startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
@@ -137,7 +138,7 @@
           startRecognizeOnceAsyncButton.disabled = false;
           return;
         }
-        var speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+        const speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
 
         speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
         let languageKeys = {};
@@ -147,14 +148,14 @@
           speechConfig.addTargetLanguage(language);
         });
 
-        var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+        const audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
         recognizer = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
 
         recognizer.recognizeOnceAsync(
           function (result) {
             startRecognizeOnceAsyncButton.disabled = false;
             if (result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
-              for (var key in languageKeys) {
+              for (const key in languageKeys) {
                 let translation = result.translations.get(key);
                 window.console.log(key + ": " + translation);
                 languageKeys[key].innerHTML += translation;

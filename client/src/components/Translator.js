@@ -4,8 +4,35 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import MicIcon from '@mui/icons-material/Mic';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import IconButton, { iconButtonClasses } from '@mui/material/IconButton';
+
+
+// const speaker = () => {
+//   const Output = () => {
+//     {translationOutput}
+//   }
+// }
+
+// const Output = (e) => {
+  
+//     startRecognizeOnceAsyncButton.disabled = false;
+//     if (result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
+//         for (const key in languageKeys) {
+//         let translation = result.translations.get(key);
+//         window.console.log(key + ": " + translation);
+//         languageKeys[key].innerHTML += translation;
+//         }
+//     }
+
+//     recognizer.close();
+//     recognizer = undefined;
+// }
 
 const Translator = () => {
+  
     const activateTranslate = () => {
         console.log(languageFrom, languageTo, userText)
         axios.post('/api/translate/', {
@@ -131,8 +158,51 @@ const Translator = () => {
       { label: 'Yucatec Maya', languagecode:'yua'},
     ];
 
+// import { useState } from 'react';
+// export const useForm = (callback, initialState = {}) => {
+//   const [values, setValues] = useState(initialState);
+//   const onChange = (event) => {
+//       setValues({ ...values, [event.target.name]: event.target.values })
+//   }
+//   const onSubmit = event => {
+//       event.preventDefault();
+//       callback();
+//   }
+//   return {
+//       onChange,
+//       onSubmit,
+//       values
+//   }
+// }
+
+
   return (
     <div>
+      <MicIcon fontSize="large"/>
+      <Box
+        id ="phraseDiv"
+        component="span"
+        sx={{
+          display: 'block',
+          p: 1,
+          m: 1,
+          bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
+          color: (theme) =>
+            theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800',
+          border: '1px solid',
+          borderColor: (theme) =>
+            theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
+          borderRadius: 2,
+          fontSize: '0.875rem',
+          fontWeight: '700',
+        }}
+      >
+        {translationOutput}
+      </Box>
+      <iconButton>
+      <VolumeUpIcon id="startSpeakTextAsyncButton" color="primary" fontSize="large"/>
+      </iconButton>
+      
         <TextField
             id="filled-multiline-static"
             label="Input field"
@@ -144,10 +214,6 @@ const Translator = () => {
                 setUserText(event.target.value);
               }}
         />
-
-        <div>
-          {translationOutput}
-        </div>
         <Autocomplete
             disablePortal
             id="combo-box-demo"
