@@ -68,11 +68,11 @@
       </tr>
       <tr>
         <td align="right"><a href="https://docs.microsoft.com/azure/cognitive-services/speech-service/get-started" target="_blank">Subscription</a>:</td>
-        <td><input id="subscriptionKey" type="text" size="40" placeholder="568967eff238487d99675a938c17f9bd"></td>
+        <td><input id="subscriptionKey" type="text" size="40" placeholder="YourSubscriptionKey"></td>
       </tr>
       <tr>
         <td align="right">Region</td>
-        <td><input id="serviceRegion" type="text" size="40" placeholder="australiaeast"></td>
+        <td><input id="serviceRegion" type="text" size="40" placeholder="YourServiceRegion"></td>
       </tr>
       <tr>
         <td align="right" valign="top">Input Text</td>
@@ -106,10 +106,8 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       startSpeakTextAsyncButton = document.getElementById("startSpeakTextAsyncButton");
-      // process.env
       subscriptionKey = document.getElementById("subscriptionKey");
       serviceRegion = document.getElementById("serviceRegion");
-      // translation output.value
       phraseDiv = document.getElementById("phraseDiv");
       resultDiv = document.getElementById("resultDiv");
 
@@ -142,9 +140,9 @@
           },
           function (err) {
             startSpeakTextAsyncButton.disabled = false;
-            // resultDiv.innerHTML += "Error: ";
-            // resultDiv.innerHTML += err;
-            // resultDiv.innerHTML += "\n";
+            resultDiv.innerHTML += "Error: ";
+            resultDiv.innerHTML += err;
+            resultDiv.innerHTML += "\n";
             window.console.log(err);
 
             synthesizer.close();
