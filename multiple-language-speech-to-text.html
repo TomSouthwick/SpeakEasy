@@ -17,7 +17,7 @@
       </tr>
       <tr>
         <td align="right"><a href="https://docs.microsoft.com/azure/cognitive-services/speech-service/get-started" target="_blank">Subscription</a>:</td>
-        <td><input id="subscriptionKey" type="text" size="40" value=""></td>
+        <td><input id="subscriptionKey" type="text" size="40" value="568967eff238487d99675a938c17f9bd"></td>
       </tr>
       <tr>
         <td align="right">Region</td>
@@ -105,13 +105,13 @@
   <!-- Speech SDK USAGE -->
   <script>
     // status fields and start button in UI
-    const resultsDivs;
-    const startRecognizeOnceAsyncButton;
+    let resultsDivs;
+    let startRecognizeOnceAsyncButton;
 
     // subscription key and region for speech services.
-    const subscriptionKey, serviceRegion, languageTargetOptions;
-    const SpeechSDK;
-    const recognizer;
+    let subscriptionKey, serviceRegion, languageTargetOptions;
+    let SpeechSDK;
+    let recognizer;
 
     document.addEventListener("DOMContentLoaded", function () {
       startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
@@ -139,7 +139,7 @@
           return;
         }
         const speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
-
+        console.log(subscriptionKey.value, serviceRegion.value);
         speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
         let languageKeys = {};
         languageTargetOptions.forEach(function(langElem, index){
