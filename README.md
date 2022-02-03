@@ -85,6 +85,7 @@ This project was desgined so that users can translate from one language to anoth
 - [GraphQL](https://graphql.org/)
 - [Express](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
+- [JSON-Web-Token](https://jwt.io/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -96,26 +97,23 @@ Clone the repo into a local folder. Open that folder in VS Code.
 
 ### Prerequisites
 
-Ensure that VS Code has the required languages inc. JS, HTML and CSS with the respective functionalities built in.
+Ensure that VS Code has the required languages inc. JS, Express, and React with the respective functionalities built in.
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/TomSouthwick/Team-Profile-Generator.git
+   git clone https://github.com/TomSouthwick/SpeakEasy.git
    ```
 2. Install NPM packages
    ```sh
    npm install
    ```
-3. Run inquirer
+3. Run develop
    ```sh
-   node index.js
+   npm run develop
    ```
-4. Run jest
-   ```sh
-   npm run test
-   ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
