@@ -22,6 +22,16 @@ export const ADD_SKILL = gql`
   }
 `;
 
+export const ADD_INPUT_PHRASE = gql`
+  mutation addInputPhrase($profileId: ID!, $inputPhrase: String!) {
+    addInputPhrase(profileId: $profileId, inputPhrase: $inputPhrase) {
+      _id
+      name
+      inputPhrases
+    }
+  }
+`;
+
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {

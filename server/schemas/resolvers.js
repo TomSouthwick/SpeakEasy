@@ -50,6 +50,18 @@ const resolvers = {
         }
       );
     },
+    addInputPhrase: async (parent, { profileId, inputPhrase }) => {
+      return Profile.findOneAndUpdate(
+        { _id: profileId },
+        {
+          $addToSet: { inputPhrases: inputPhrase },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    },
     removeProfile: async (parent, { profileId }) => {
       return Profile.findOneAndDelete({ _id: profileId });
     },

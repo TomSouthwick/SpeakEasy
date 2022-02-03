@@ -17,6 +17,7 @@ export const QUERY_SINGLE_PROFILE = gql`
       _id
       name
       skills
+      inputPhrases
     }
   }
 `;

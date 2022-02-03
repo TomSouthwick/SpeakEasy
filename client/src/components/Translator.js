@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import TextField from "@mui/material/TextField";
@@ -9,12 +9,47 @@ import MicIcon from "@mui/icons-material/Mic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import IconButton, { IconButtonClasses } from "@mui/material/IconButton";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
+import { useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+
+
+import { ADD_INPUT_PHRASE } from '../utils/mutations';
+import { QUERY_SINGLE_PROFILE } from '../utils/queries';
+
+import Auth from '../utils/auth';
 
 
 const Translator = () => {
+  const [addInputPhrase, { error }] = useMutation(ADD_INPUT_PHRASE);
 
-  const activateTranslate = (inputText) => {
+  let userProfile, queryResponse
+ 
+
+  // useEffect(() => {
+  //   // Update the document title using the browser API
+  //   try {
+  //     userProfile = Auth.getProfile().data._id
+  //     console.log(userProfile)
+      
+  //   } catch(err) {
+  //     console.error(err)
+  //   }
+  // });
+  const profileQuery = useQuery(QUERY_SINGLE_PROFILE, {
+    variables: { profileId: Auth.getProfile().data._id },
+  });
+
+ 
+
+  const activateTranslate = async (inputText) => {
     console.log(languageFrom, languageTo);
+
+    const profileId = Auth.getProfile().data._id
+    const data = await addInputPhrase({
+      variables: { profileId, inputPhrase: inputText },
+    });
+    console.log(data)
+    // addInputPhrase(inputText)
     
     axios
       .post("/api/translate/", {
@@ -30,8 +65,6 @@ const Translator = () => {
         console.log(error);
       });
   };
-
-  
   
   const sttFromMic = async(test) => {
     console.log(test)
@@ -71,7 +104,6 @@ const Translator = () => {
         return result;
     });
   }
-
 
   const activateTextToSpeech = () => {
     const speechConfig = sdk.SpeechConfig.fromSubscription(
@@ -203,6 +235,12 @@ const Translator = () => {
       {/* <Button onClick={sttFromMic} variant="contained">
         Speech to text
       </Button> */}
+
+      {!profileQuery.loading && (profileQuery?.data?.profile?.inputPhrases.map(phrase => {
+        return (<div> {phrase} </div>)
+      }))
+        
+      }
     </div>
   );
 };
