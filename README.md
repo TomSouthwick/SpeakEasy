@@ -16,17 +16,17 @@
 <h3 align="center">Speak Easy</h3>
 
   <p align="center">
-    A simple CLI app that dynamically creates a fully styled html element with team members from an orgnisation. This output can be viewed in the browser. The class structure is tested using Jest
+    Speak Easy is a dynamic app that allows a user to translate either their voice or written text into over 110 different languages! This app uses Microsoft Azure's Cognitive Speech SDK! The App allows for recent phrases and inputs to be stored within React, which allows the user to input their recent phrases to be translated out again into the language of their choosing. This lightweight mobile-friendly app is designed to be accessed from around the world in the hopes of removing communication barriers between visitors and their country of choosing! 
     <br />
-    <a href="https://github.com/TomSouthwick/Team-Profile-Generator"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/TomSouthwick/SpeakEasy"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     ·
     <a href="https://youtu.be/2JY0Rd7fpaw">View Demo</a>
     ·
-    <a href="https://github.com/TomSouthwick/Team-Profile-Generator/issues">Report Bug</a>
+    <a href="https://github.com/TomSouthwick/SpeakEasy">Report Bug</a>
     ·
-    <a href="https://github.com/TomSouthwick/Team-Profile-Generator/issues">Request Feature</a>
+    <a href="https://github.com/TomSouthwick/SpeakEasy">Request Feature</a>
   </p>
 </div>
 <div align="center">
@@ -74,16 +74,17 @@
 <img src="assets/screenshot2.png" width="100%" height="750">
  <br />
 
-This project is designed to be able to track employees throughout an organisation. It is designed that a manager can print out their employee list onto a html document that is styled efficiently with CSS. Each type of employee, be it Intern, Engineer or manager has a different image and attribute associated with it. This is a really easy way to differentiate which employees are who, and their role within a firm.
+This project was desgined so that users can translate from one language to another easily. The user can either type or speak into the microphone in order to present the required text to be translated. Once the text is translated, it then can either be read or spoken allowed in the native voice of that selected language. Using the Cognitive Speech SDK from Azure, the app has the ability to have each language spoken or interpreted natively. This provides a user with a unique feature to hear the translated statement spoken in the desired language by someone who is fluent in that language. The requests to the server can only be made with a logged in User.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-- [Node.js](https://nodejs.org/en/)
-- [npm inquirer](https://www.npmjs.com/package/inquirer)
-- [Javascript](https://www.javascript.com/)
-- [Jest.js](https://jestjs.io/)
+- [Cognitive Speech Services](https://azure.microsoft.com/en-au/services/cognitive-services/speech-services/)
+- [Material-UI](https://mui.com/)
+- [GraphQL](https://graphql.org/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
