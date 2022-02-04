@@ -1,6 +1,6 @@
-const { AuthenticationError } = require('apollo-server-express');
-const { Profile } = require('../models');
-const { signToken } = require('../utils/auth');
+const { AuthenticationError } = require("apollo-server-express");
+const { Profile } = require("../models");
+const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
@@ -24,14 +24,14 @@ const resolvers = {
       const profile = await Profile.findOne({ email });
 
       if (!profile) {
-        console.log(email)
-        throw new AuthenticationError('No profile with this email found!');
+        console.log(email);
+        throw new AuthenticationError("No profile with this email found!");
       }
 
       const correctPw = await profile.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect password!');
+        throw new AuthenticationError("Incorrect password!");
       }
 
       const token = signToken(profile);
@@ -55,6 +55,27 @@ const resolvers = {
         { _id: profileId },
         {
           $addToSet: { inputPhrases: inputPhrase },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    },
+    removeAllTranslations: async (parent, { profileId }) => {
+      return Profile.findOneAndUpdate(
+        { _id: profileId },
+        {
+          inputPhrases: [],
+          translatedPhrases: [],
+        }
+      );
+    },
+    addTranslatedPhrase: async (parent, { profileId, translatedPhrase }) => {
+      return Profile.findOneAndUpdate(
+        { _id: profileId },
+        {
+          $addToSet: { translatedPhrases: translatedPhrase },
         },
         {
           new: true,

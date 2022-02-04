@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type Profile {
@@ -8,6 +8,7 @@ const typeDefs = gql`
     password: String
     skills: [String]!
     inputPhrases: [String]!
+    translatedPhrases: [String]!
   }
 
   type Auth {
@@ -26,10 +27,12 @@ const typeDefs = gql`
 
     addSkill(profileId: ID!, skill: String!): Profile
     addInputPhrase(profileId: ID!, inputPhrase: String!): Profile
+    addTranslatedPhrase(profileId: ID!, translatedPhrase: String!): Profile
+
+    removeAllTranslations(profileId: ID!): Profile
     removeProfile(profileId: ID!): Profile
     removeSkill(profileId: ID!, skill: String!): Profile
   }
 `;
-
 
 module.exports = typeDefs;

@@ -18,6 +18,7 @@ export const QUERY_SINGLE_PROFILE = gql`
       name
       skills
       inputPhrases
+      translatedPhrases
     }
   }
 `;

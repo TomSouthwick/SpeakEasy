@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const ADD_PROFILE = gql`
   mutation addProfile($name: String!, $email: String!, $password: String!) {
@@ -28,6 +28,30 @@ export const ADD_INPUT_PHRASE = gql`
       _id
       name
       inputPhrases
+    }
+  }
+`;
+
+export const ADD_TRANSLATED_PHRASE = gql`
+  mutation addTranslatedPhrase($profileId: ID!, $translatedPhrase: String!) {
+    addTranslatedPhrase(
+      profileId: $profileId
+      translatedPhrase: $translatedPhrase
+    ) {
+      _id
+      name
+      translatedPhrases
+    }
+  }
+`;
+
+export const REMOVE_ALL_TRANSLATIONS = gql`
+  mutation removeAllTranslations($profileId: ID!) {
+    removeAllTranslations(profileId: $profileId) {
+      _id
+      name
+      inputPhrases
+      translatedPhrases
     }
   }
 `;

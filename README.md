@@ -114,14 +114,11 @@ Ensure that VS Code has the required languages inc. JS, Express, and React with 
    npm run develop
    ```
 
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
 ## Usage
-
-A user will be promoted to add in their manager and any other respective colleagues that they work with. Once they've completed all entries, the user can open the output folder, and `team.html` in the browser to see their team displayed own their own unique cards. Make sure you run a test after generating your content to ensure that all the clases respective fields have been put in and have called accordingly.
 
 _For more examples, please refer to the [Documentation](https://github.com/TomSouthwick/Team-Profile-Generator)_
 
