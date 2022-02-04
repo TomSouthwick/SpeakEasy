@@ -62,15 +62,6 @@ const resolvers = {
         }
       );
     },
-    removeAllTranslations: async (parent, { profileId }) => {
-      return Profile.findOneAndUpdate(
-        { _id: profileId },
-        {
-          inputPhrases: [],
-          translatedPhrases: [],
-        }
-      );
-    },
     addTranslatedPhrase: async (parent, { profileId, translatedPhrase }) => {
       return Profile.findOneAndUpdate(
         { _id: profileId },
@@ -80,6 +71,15 @@ const resolvers = {
         {
           new: true,
           runValidators: true,
+        }
+      );
+    },
+    removeAllTranslations: async (parent, { profileId }) => {
+      return Profile.findOneAndUpdate(
+        { _id: profileId },
+        {
+          inputPhrases: [],
+          translatedPhrases: [],
         }
       );
     },

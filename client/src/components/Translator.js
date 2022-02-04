@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import MicIcon from "@mui/icons-material/Mic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import IconButton, { IconButtonClasses } from "@mui/material/IconButton";
+import { styled, createTheme, ThemeProvider } from "@mui/system";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
@@ -52,7 +53,6 @@ const Translator = () => {
     const data = await addInputPhrase({
       variables: { profileId, inputPhrase: inputText },
     });
-    console.log(data);
     // addInputPhrase(inputText)
 
     axios
@@ -82,7 +82,7 @@ const Translator = () => {
       tokenObj.authToken,
       tokenObj.region
     );
-    speechConfig.speechRecognitionLanguage = "en-US";
+    speechConfig.speechRecognitionLanguage = languageFrom;
     let state = "";
     state = "INITIALIZED: ready to test speech...";
 
@@ -147,23 +147,40 @@ const Translator = () => {
   };
 
   const clearAll = async () => {
-    // // let
+    // let
     const clearPhrases = await removeAllTranslations({
       variables: { profileId: Auth.getProfile().data._id },
     });
   };
-  // const [inputPhrases, setInputPhrases] = useState("")
+  const [clearTranslations, setClearTranslations] = useState("");
   const [languageFrom, setLanguageFrom] = useState("en-US");
   const [languageTo, setLanguageTo] = useState("fr-FR");
-  const [userText, setUserText] = useState("Hello World");
+  const [userText, setUserText] = useState("Hello World - Translate me");
   const [translationOutput, setTranslationOutput] = useState("");
   const [translatedSpeech] = useState("");
+
+  const customTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#1976d2",
+        contrastText: "white",
+      },
+    },
+  });
+
+  const MyThemeComponent = styled("div")(({ theme }) => ({
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
+    padding: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
+  }));
 
   return (
     <div>
       <Box
         id="phraseDiv"
         component="span"
+        minHeight="30px"
         // defaultValue="Translated text..."
         // fontColor="black"
         sx={{
@@ -185,7 +202,9 @@ const Translator = () => {
         {translationOutput}
       </Box>
       <div>{translatedSpeech}</div>
-
+      <ThemeProvider theme={customTheme}>
+        <MyThemeComponent>{translationOutput}</MyThemeComponent>
+      </ThemeProvider>
       <IconButton>
         <VolumeUpIcon
           id="startSpeakTextAsyncButton"
@@ -194,7 +213,6 @@ const Translator = () => {
           onClick={activateTextToSpeech}
         />
       </IconButton>
-
       <TextField
         id="filled-multiline-static"
         // label="Text to be translated"
@@ -236,7 +254,6 @@ const Translator = () => {
       <Button onClick={() => activateTranslate(userText)} variant="contained">
         Translate
       </Button>
-
       {/* {translationOutput.length > 0 && (<Button onClick={activateTextToSpeech} variant="contained">
         Text to Speech
       </Button>)} */}
@@ -249,7 +266,6 @@ const Translator = () => {
       <Button onClick={() => clearAll(userText)} variant="contained">
         Clear
       </Button>
-
       {!profileQuery.loading &&
         profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
           return <div> {phrase} </div>;
