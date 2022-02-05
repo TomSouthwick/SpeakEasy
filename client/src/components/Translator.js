@@ -13,6 +13,7 @@ import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 import { languages } from "../utils/language-code";
+import { activateTextToSpeech } from "../utils/speech";
 
 import { ADD_INPUT_PHRASE, REMOVE_ALL_TRANSLATIONS } from "../utils/mutations";
 import { ADD_TRANSLATED_PHRASE } from "../utils/mutations";
@@ -30,18 +31,6 @@ const Translator = () => {
   const [removeAllTranslations, { error: removeAllTranslationsError }] =
     useMutation(REMOVE_ALL_TRANSLATIONS);
 
-  let userProfile, queryResponse;
-
-  // useEffect(() => {
-  //   // Update the document title using the browser API
-  //   try {
-  //     userProfile = Auth.getProfile().data._id
-  //     console.log(userProfile)
-
-  //   } catch(err) {
-  //     console.error(err)
-  //   }
-  // });
   const profileQuery = useQuery(QUERY_SINGLE_PROFILE, {
     variables: { profileId: Auth.getProfile().data._id },
   });
@@ -114,37 +103,6 @@ const Translator = () => {
       // state = displayText
       return result;
     });
-  };
-
-  const activateTextToSpeech = async (languageTo, sourceTranslation) => {
-    const tokenObj = await getTokenOrRefresh();
-    const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(
-      tokenObj.authToken,
-      tokenObj.region
-    );
-    // speechConfig.speechSynthesisLanguage = "en-US"; // For example, "de-DE"
-    speechConfig.speechSynthesisLanguage = languageTo; // For example, "de-DE"
-    const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
-
-    const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
-    synthesizer.speakTextAsync(
-      sourceTranslation,
-      (result) => {
-        if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
-          console.log("synthesis finished.");
-        } else {
-          console.error(
-            "Speech synthesis canceled, " +
-              result.errorDetails +
-              "\nDid you update the subscription info?"
-          );
-        }
-      },
-      (error) => {
-        console.log(error);
-        synthesizer.close();
-      }
-    );
   };
 
   const clearAll = async () => {
