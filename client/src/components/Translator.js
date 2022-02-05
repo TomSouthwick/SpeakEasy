@@ -64,8 +64,9 @@ const Translator = () => {
       .then(async function (response) {
         console.log(response);
 
+        const translated = response.data.text + "@@" + languageTo;
         const translatedData = await addTranslatedPhrase({
-          variables: { profileId, translatedPhrase: response.data.text },
+          variables: { profileId, translatedPhrase: translated },
         });
         // store the translated text to db
         setTranslationOutput(response.data.text);
@@ -115,7 +116,7 @@ const Translator = () => {
     });
   };
 
-  const activateTextToSpeech = async () => {
+  const activateTextToSpeech = async (languageTo, sourceTranslation) => {
     const tokenObj = await getTokenOrRefresh();
     const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(
       tokenObj.authToken,
@@ -127,7 +128,7 @@ const Translator = () => {
 
     const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
     synthesizer.speakTextAsync(
-      translationOutput,
+      sourceTranslation,
       (result) => {
         if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
           console.log("synthesis finished.");
@@ -211,7 +212,7 @@ const Translator = () => {
           id="startSpeakTextAsyncButton"
           color="primary"
           fontSize="large"
-          onClick={activateTextToSpeech}
+          onClick={() => activateTextToSpeech(languageTo, translationOutput)}
         />
       </IconButton>
       <TextField
@@ -271,9 +272,17 @@ const Translator = () => {
         profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
           return <div> {phrase} </div>;
         })}
+
       {!profileQuery.loading &&
         profileQuery?.data?.profile?.translatedPhrases.map((phrase) => {
-          return <div> {phrase} </div>;
+          const splitted = phrase.split("@@");
+          const translation = splitted[0];
+          const lang = splitted[1];
+          return (
+            <div onClick={() => activateTextToSpeech(lang, translation)}>
+              {translation}
+            </div>
+          );
         })}
     </div>
   );
