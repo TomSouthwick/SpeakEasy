@@ -151,6 +151,7 @@ const Translator = () => {
     const clearPhrases = await removeAllTranslations({
       variables: { profileId: Auth.getProfile().data._id },
     });
+    profileQuery.refetch();
   };
   const [clearTranslations, setClearTranslations] = useState("");
   const [languageFrom, setLanguageFrom] = useState("en-US");
