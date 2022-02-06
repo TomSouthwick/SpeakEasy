@@ -14,6 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
+
 import { styled, createTheme, ThemeProvider } from "@mui/system";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { useMutation } from "@apollo/client";
@@ -221,23 +222,22 @@ const Translator = () => {
                 fontSize: "1rem",
                 fontWeight: "560",
               }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment>
-                    <IconButton>
-                      <VolumeUpIcon
-                        id="startSpeakTextAsyncButton"
-                        color="primary"
-                        fontSize="large"
-                        onClick={() =>
-                          activateTextToSpeech(languageTo, translationOutput)
-                        }
-                      />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
             >
+              <IconButton>
+                <VolumeUpIcon
+                  style={{
+                    position: "absolute",
+                    marginLeft: "620px",
+                    marginTop: "60px",
+                  }}
+                  id="startSpeakTextAsyncButton"
+                  color="primary"
+                  fontSize="large"
+                  onClick={() =>
+                    activateTextToSpeech(languageTo, translationOutput)
+                  }
+                />
+              </IconButton>
               {translationOutput}
             </Box>
             <Autocomplete
