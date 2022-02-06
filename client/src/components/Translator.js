@@ -5,9 +5,15 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import MicIcon from "@mui/icons-material/Mic";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import IconButton, { IconButtonClasses } from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { styled, createTheme, ThemeProvider } from "@mui/system";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { useMutation } from "@apollo/client";
@@ -116,8 +122,9 @@ const Translator = () => {
   const [languageFrom, setLanguageFrom] = useState("en-US");
   const [languageTo, setLanguageTo] = useState("fr-FR");
   const [userText, setUserText] = useState("Hello World - Translate me");
-  const [translationOutput, setTranslationOutput] = useState("");
-  const [translatedSpeech] = useState("");
+  const [translationOutput, setTranslationOutput] = useState(
+    "Hello World - Traduisez-moi"
+  );
 
   const customTheme = createTheme({
     palette: {
@@ -135,91 +142,135 @@ const Translator = () => {
     borderRadius: theme.shape.borderRadius,
   }));
 
+  const style = {
+    width: "100%",
+    maxWidth: 360,
+    bgcolor: "background.paper",
+  };
+
   return (
     <div>
-      <Box
-        id="phraseDiv"
-        component="span"
-        minHeight="30px"
-        // defaultValue="Translated text..."
-        // fontColor="black"
-        sx={{
-          display: "block",
-          p: 1,
-          m: 1,
-          bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "#101010" : "#fff",
-          color: (theme) =>
-            theme.palette.mode === "dark" ? "grey.300" : "grey.800",
-          border: "1px solid",
-          borderColor: (theme) =>
-            theme.palette.mode === "dark" ? "grey.800" : "grey.300",
-          borderRadius: 2,
-          fontSize: "0.875rem",
-          fontWeight: "700",
-        }}
-      >
-        {translationOutput}
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              id="filled-multiline-static"
+              // label="Text to be translated"
+              style={{ width: "100%" }}
+              multiline
+              rows={4}
+              defaultValue={userText}
+              variant="filled"
+              value={userText}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <IconButton>
+                      <MicIcon
+                        fontSize="large"
+                        onClick={sttFromMic}
+                        color="primary"
+                      />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(event) => {
+                setUserText(event.target.value);
+                //call the api response = apirCAll()
+                // setTranslationOutput(response)
+              }}
+            ></TextField>
+
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              placeholder="English"
+              defaultValue={{ label: "English" }}
+              options={languages}
+              sx={{ width: "100%", marginTop: "20px" }}
+              renderInput={(params) => (
+                <TextField {...params} label="Language" />
+              )}
+              onChange={(event, newValue) => {
+                setLanguageFrom(newValue.languagecode);
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Box
+              id="phraseDiv"
+              component="span"
+              minHeight="30px"
+              // defaultValue="Translated text..."
+              // fontColor="black"
+              sx={{
+                display: "block",
+                padding: "10px",
+                paddingTop: "27px",
+                paddingRight: "40px",
+                minHeight: "125px",
+                bgcolor: (theme) =>
+                  theme.palette.mode === "dark" ? "#101010" : "#fff",
+                color: (theme) =>
+                  theme.palette.mode === "dark" ? "grey.300" : "grey.800",
+                border: "1px solid",
+                borderColor: (theme) =>
+                  theme.palette.mode === "dark" ? "grey.800" : "grey.300",
+                borderRadius: 2,
+                fontSize: "1rem",
+                fontWeight: "560",
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <IconButton>
+                      <VolumeUpIcon
+                        id="startSpeakTextAsyncButton"
+                        color="primary"
+                        fontSize="large"
+                        onClick={() =>
+                          activateTextToSpeech(languageTo, translationOutput)
+                        }
+                      />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            >
+              {translationOutput}
+            </Box>
+            <Autocomplete
+              disablePortal
+              placeholder="French"
+              id="combo-box-demo"
+              options={languages}
+              sx={{ width: "100%", marginTop: "20px" }}
+              defaultValue={{ label: "French" }}
+              renderInput={(params) => (
+                <TextField {...params} label="Language" />
+              )}
+              onChange={(event, newValue) => {
+                setLanguageTo(newValue.languagecode);
+              }}
+            />
+          </Grid>
+          <Grid item xs={6} md={4}>
+            3
+          </Grid>
+          <Grid item xs={6} md={8}>
+            4
+          </Grid>
+        </Grid>
       </Box>
-      <div>{translatedSpeech}</div>
-      <ThemeProvider theme={customTheme}>
-        <MyThemeComponent>{translationOutput}</MyThemeComponent>
-      </ThemeProvider>
-      <IconButton>
-        <VolumeUpIcon
-          id="startSpeakTextAsyncButton"
-          color="primary"
-          fontSize="large"
-          onClick={() => activateTextToSpeech(languageTo, translationOutput)}
-        />
-      </IconButton>
-      <TextField
-        id="filled-multiline-static"
-        // label="Text to be translated"
-        multiline
-        rows={4}
-        defaultValue={userText}
-        variant="filled"
-        value={userText}
-        onChange={(event) => {
-          setUserText(event.target.value);
-          //call the api response = apirCAll()
-          // setTranslationOutput(response)
-        }}
-      />
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        placeholder="English"
-        defaultValue={{ label: "English" }}
-        options={languages}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Language" />}
-        onChange={(event, newValue) => {
-          setLanguageFrom(newValue.languagecode);
-        }}
-      />
-      <Autocomplete
-        disablePortal
-        placeholder="French"
-        id="combo-box-demo"
-        options={languages}
-        sx={{ width: 300 }}
-        defaultValue={{ label: "French" }}
-        renderInput={(params) => <TextField {...params} label="Language" />}
-        onChange={(event, newValue) => {
-          setLanguageTo(newValue.languagecode);
-        }}
-      />
+
       <Button onClick={() => activateTranslate(userText)} variant="contained">
         Translate
       </Button>
       {/* {translationOutput.length > 0 && (<Button onClick={activateTextToSpeech} variant="contained">
         Text to Speech
       </Button>)} */}
-      <IconButton>
-        <MicIcon fontSize="large" onClick={sttFromMic} color="primary" />
-      </IconButton>
+
       {/* <Button onClick={sttFromMic} variant="contained">
         Speech to text
       </Button> */}
@@ -228,7 +279,14 @@ const Translator = () => {
       </Button>
       {!profileQuery.loading &&
         profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
-          return <div> {phrase} </div>;
+          return (
+            <list sx={style} component="nav" aria-label="mailbox folders">
+              <ListItem button>
+                <ListItemText primary={phrase} />
+              </ListItem>
+              <Divider />
+            </list>
+          );
         })}
 
       {!profileQuery.loading &&
@@ -237,9 +295,15 @@ const Translator = () => {
           const translation = splitted[0];
           const lang = splitted[1];
           return (
-            <div onClick={() => activateTextToSpeech(lang, translation)}>
-              {translation}
-            </div>
+            <list sx={style} component="nav" aria-label="mailbox folders">
+              <ListItem button>
+                <ListItemText
+                  primary={translation}
+                  onClick={() => activateTextToSpeech(lang, translation)}
+                />
+              </ListItem>
+              <Divider />
+            </list>
           );
         })}
     </div>
