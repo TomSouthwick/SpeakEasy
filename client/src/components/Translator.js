@@ -14,6 +14,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
 
 import { styled, createTheme, ThemeProvider } from "@mui/system";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
@@ -200,11 +202,6 @@ const Translator = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Box
-              id="phraseDiv"
-              component="span"
-              minHeight="30px"
-              // defaultValue="Translated text..."
-              // fontColor="black"
               sx={{
                 display: "block",
                 padding: "10px",
@@ -223,22 +220,31 @@ const Translator = () => {
                 fontWeight: "560",
               }}
             >
-              <IconButton>
-                <VolumeUpIcon
-                  style={{
-                    position: "absolute",
-                    marginLeft: "620px",
-                    marginTop: "60px",
-                  }}
-                  id="startSpeakTextAsyncButton"
-                  color="primary"
-                  fontSize="large"
-                  onClick={() =>
-                    activateTextToSpeech(languageTo, translationOutput)
-                  }
-                />
-              </IconButton>
-              {translationOutput}
+              <Box
+                id="phraseDiv"
+                component="span"
+                minHeight="30px"
+                // defaultValue="Translated text..."
+                // fontColor="black"
+              >
+                <IconButton>
+                  <VolumeUpIcon
+                    style={{
+                      position: "absolute",
+                      marginLeft: "620px",
+                      marginTop: "60px",
+                    }}
+                    id="startSpeakTextAsyncButton"
+                    color="primary"
+                    fontSize="large"
+                    onClick={() =>
+                      activateTextToSpeech(languageTo, translationOutput)
+                    }
+                  />
+                </IconButton>
+
+                {translationOutput}
+              </Box>
             </Box>
             <Autocomplete
               disablePortal

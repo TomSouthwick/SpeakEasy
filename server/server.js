@@ -45,6 +45,38 @@ if (process.env.NODE_ENV === "production") {
 app.post("/api/translate", limiter, async (req, res) => {
   // validation
 
+  const username = req.body.username;
+  const user = { name: username };
+  const acessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+  res.json;
+  ({ accessToken: accessToken });
+
+  //   'form': {
+  //     'token': req.session.accessToken,
+  //     'token_type_hint': 'access_token',
+  //     'client_id': process.env.OIDC_CLIENT_ID,
+  //     'client_secret': process.env.OIDC_CLIENT_SECRET
+  //   }
+  // },function(err, response, body){
+  //   var token = JSON.parse(body);
+  //   var tokenValid = false;
+
+  //   var clientIdValid = token.client_id === process.env.OIDC_CLIENT_ID;
+
+  //   console.log(token.client_id)
+  //   console.log(process.env.OIDC_CLIENT_ID)
+  //   // current time as Unix timestamp
+  //   var currentTimestamp = new Date().getTime() / 1000;
+  //   var tokenIsNotExpired = token.exp > currentTimestamp;
+
+  //   // sample code to ensure that the required claim is included
+  //   // var isAuthorized = token.scope.includes("post:delete")
+
+  //   // uncomment isAuthorized if checking for a specific scope
+  //   tokenValid = clientIdValid && tokenIsNotExpired //&& isAuthorized
+  // });
+  // });
+
   // make sure the user is logged in
   // get the jwt token from req
   // validate it
