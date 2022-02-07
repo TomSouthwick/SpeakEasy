@@ -6,11 +6,13 @@ import ProfileList from "../components/ProfileList/ProfileList";
 
 import { QUERY_PROFILES } from "../utils/queries";
 import auth from "../utils/auth";
+import { useHistory, useLocation } from "react-router-dom";
 
 const Home = () => {
+  const history = useHistory();
   // is user is not authenticated, redirect to /login
   if (!auth.loggedIn()) {
-    window.location.href = "/login";
+    history.push("/login");
   }
   const { loading, data } = useQuery(QUERY_PROFILES);
   const profiles = data?.profiles || [];
