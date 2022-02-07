@@ -1,3 +1,14 @@
+/* my gear */
+
+.card {
+  background: #ffffff7a;
+    box-shadow: 10px 8px 9px 0px #58535380;
+    border-radius: 12px;
+}
+
+
+
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */

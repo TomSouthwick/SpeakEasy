@@ -44,8 +44,8 @@ const Login = (props) => {
     <main className="flex-row justify-center mb-4">
       <div className="col-12 col-lg-10">
         <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Login</h4>
-          <div className="card-body">
+          <h4 style={{ borderRadius: "12px 12px 0 0" }} className="card-header bg-dark text-light p-2">Login</h4>
+          <div className="card-body" style={{padding: "22px"}}>
             {data ? (
               <p>
                 Success! You may now head{' '}
