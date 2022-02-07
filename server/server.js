@@ -2,7 +2,7 @@ require("dotenv").config({ path: "config.env" });
 // console.log(process.env)
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-
+const { authenticate } = require("./middleware/authenticate");
 const path = require("path");
 const throttle = require("express-rate-limit");
 
@@ -42,57 +42,28 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-app.post("/api/translate", limiter, async (req, res) => {
+app.post("/api/translate", limiter, authenticate, async (req, res) => {
   // validation
-
-  const username = req.body.username;
-  const user = { name: username };
-  const acessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json;
-  ({ accessToken: accessToken });
-
-  //   'form': {
-  //     'token': req.session.accessToken,
-  //     'token_type_hint': 'access_token',
-  //     'client_id': process.env.OIDC_CLIENT_ID,
-  //     'client_secret': process.env.OIDC_CLIENT_SECRET
-  //   }
-  // },function(err, response, body){
-  //   var token = JSON.parse(body);
-  //   var tokenValid = false;
-
-  //   var clientIdValid = token.client_id === process.env.OIDC_CLIENT_ID;
-
-  //   console.log(token.client_id)
-  //   console.log(process.env.OIDC_CLIENT_ID)
-  //   // current time as Unix timestamp
-  //   var currentTimestamp = new Date().getTime() / 1000;
-  //   var tokenIsNotExpired = token.exp > currentTimestamp;
-
-  //   // sample code to ensure that the required claim is included
-  //   // var isAuthorized = token.scope.includes("post:delete")
-
-  //   // uncomment isAuthorized if checking for a specific scope
-  //   tokenValid = clientIdValid && tokenIsNotExpired //&& isAuthorized
-  // });
-  // });
-
-  // make sure the user is logged in
-  // get the jwt token from req
-  // validate it
-
-  // if valid let req pass
-
-  // if not send back err
 
   // get req body
 
   // if > 500 char
   // throw an err
-
   const fromLang = req.body.fromLang;
   const toLang = req.body.toLang;
   const userText = req.body.userText;
+
+  if (!userText) {
+    return res.status(400).json({ msg: "Please enter some text to translate" });
+  }
+
+  if (userText.length > 500) {
+    return res
+      .status(400)
+      .json({
+        msg: "Translation is too long! Try translating a shorter phrase",
+      });
+  }
 
   try {
     const result = await translate(fromLang, toLang, userText);

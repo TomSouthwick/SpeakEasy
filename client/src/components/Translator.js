@@ -14,8 +14,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 
 import { styled, createTheme, ThemeProvider } from "@mui/system";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
@@ -124,9 +122,9 @@ const Translator = () => {
   const [clearTranslations, setClearTranslations] = useState("");
   const [languageFrom, setLanguageFrom] = useState("en-US");
   const [languageTo, setLanguageTo] = useState("fr-FR");
-  const [userText, setUserText] = useState("Hello World - Translate me");
+  const [userText, setUserText] = useState("Hello World. Translate me");
   const [translationOutput, setTranslationOutput] = useState(
-    "Hello World - Traduisez-moi"
+    "Salut tout le monde. Traduisez-moi"
   );
 
   const customTheme = createTheme({
@@ -187,6 +185,7 @@ const Translator = () => {
 
             <Autocomplete
               disablePortal
+              disableClearable
               id="combo-box-demo"
               placeholder="English"
               defaultValue={{ label: "English" }}
@@ -248,6 +247,7 @@ const Translator = () => {
             </Box>
             <Autocomplete
               disablePortal
+              disableClearable
               placeholder="French"
               id="combo-box-demo"
               options={languages}
@@ -286,12 +286,17 @@ const Translator = () => {
       {!profileQuery.loading &&
         profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
           return (
-            <list sx={style} component="nav" aria-label="mailbox folders">
-              <ListItem button>
+            <List sx={style} component="nav" aria-label="mailbox folders">
+              <ListItem
+                button
+                onClick={() => {
+                  navigator.clipboard.writeText(phrase);
+                }}
+              >
                 <ListItemText primary={phrase} />
               </ListItem>
               <Divider />
-            </list>
+            </List>
           );
         })}
 
@@ -301,7 +306,7 @@ const Translator = () => {
           const translation = splitted[0];
           const lang = splitted[1];
           return (
-            <list sx={style} component="nav" aria-label="mailbox folders">
+            <List sx={style} component="nav" aria-label="mailbox folders">
               <ListItem button>
                 <ListItemText
                   primary={translation}
@@ -309,7 +314,7 @@ const Translator = () => {
                 />
               </ListItem>
               <Divider />
-            </list>
+            </List>
           );
         })}
     </div>

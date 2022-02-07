@@ -11,6 +11,9 @@ class AuthService {
   // return `true` or `false` if token exists (does not verify if it's expired yet)
   loggedIn() {
     const token = this.getToken();
+
+    // check if token has exp or not
+
     return token ? true : false;
   }
 
