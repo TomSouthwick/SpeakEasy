@@ -14,6 +14,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+
+import { useHistory, useLocation } from "react-router-dom";
 
 import { styled, createTheme, ThemeProvider } from "@mui/system";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
@@ -42,9 +45,20 @@ const Translator = () => {
     variables: { profileId: Auth.getProfile().data._id },
   });
 
-  const activateTranslate = async (inputText) => {
-    console.log(languageFrom, languageTo);
+  const history = useHistory();
+  // is user is not authenticated, redirect to /login
+  
 
+  const activateTranslate = async (inputText) => {
+    if (!Auth.loggedIn()) {
+      history.push("/login");
+      return
+    }
+    console.log(languageFrom, languageTo, Auth.getToken());
+
+    // const auth = getToken() {
+    //   return localStorage.getItem("id_token");
+    // }
     const profileId = Auth.getProfile().data._id;
     const data = await addInputPhrase({
       variables: { profileId, inputPhrase: inputText },
@@ -56,6 +70,7 @@ const Translator = () => {
         fromLang: languageFrom,
         toLang: languageTo,
         userText: inputText,
+        token: Auth.getToken(),
       })
       .then(async function (response) {
         console.log(response);
@@ -80,13 +95,9 @@ const Translator = () => {
       tokenObj.region
     );
     speechConfig.speechRecognitionLanguage = languageFrom;
-    let state = "";
-    state = "INITIALIZED: ready to test speech...";
 
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
     const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
-
-    state = "speak into your microphone...";
 
     recognizer.recognizeOnceAsync((result) => {
       // setTimeout(() => {
@@ -166,7 +177,7 @@ const Translator = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
-                    <IconButton>
+                    <IconButton sx={{    marginTop: "-65px"}}>
                       <MicIcon
                         fontSize="large"
                         onClick={sttFromMic}
@@ -223,16 +234,20 @@ const Translator = () => {
                 id="phraseDiv"
                 component="span"
                 minHeight="30px"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}
                 // defaultValue="Translated text..."
                 // fontColor="black"
               >
+                <div>
+                {translationOutput}
+                </div>
+                <div style={{marginTop: "-15px"}}>
                 <IconButton>
                   <VolumeUpIcon
-                    style={{
-                      position: "absolute",
-                      marginLeft: "620px",
-                      marginTop: "60px",
-                    }}
+                   
                     id="startSpeakTextAsyncButton"
                     color="primary"
                     fontSize="large"
@@ -241,8 +256,9 @@ const Translator = () => {
                     }
                   />
                 </IconButton>
+                </div>
+                
 
-                {translationOutput}
               </Box>
             </Box>
             <Autocomplete
@@ -261,62 +277,63 @@ const Translator = () => {
               }}
             />
           </Grid>
-          <Grid item xs={6} md={4}>
-            3
-          </Grid>
-          <Grid item xs={6} md={8}>
-            4
-          </Grid>
+          
         </Grid>
       </Box>
 
-      <Button onClick={() => activateTranslate(userText)} variant="contained">
-        Translate
-      </Button>
-      {/* {translationOutput.length > 0 && (<Button onClick={activateTextToSpeech} variant="contained">
-        Text to Speech
-      </Button>)} */}
+      <div style={{textAlign: "center"}}>     
+        <Button style={{marginTop: "10px", marginBottom: "20px"}} onClick={() => activateTranslate(userText)} variant="contained">
+          Translate
+        </Button>
+      </div>
 
-      {/* <Button onClick={sttFromMic} variant="contained">
-        Speech to text
-      </Button> */}
-      <Button onClick={() => clearAll(userText)} variant="contained">
-        Clear
-      </Button>
-      {!profileQuery.loading &&
-        profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
-          return (
-            <List sx={style} component="nav" aria-label="mailbox folders">
-              <ListItem
-                button
-                onClick={() => {
-                  navigator.clipboard.writeText(phrase);
-                }}
-              >
-                <ListItemText primary={phrase} />
-              </ListItem>
-              <Divider />
-            </List>
-          );
-        })}
+      <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+                {!profileQuery.loading &&
+              profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
+                return (
+                  <List sx={style} component="nav" aria-label="mailbox folders">
+                    <ListItem
+                      button
+                      onClick={() => {
+                        navigator.clipboard.writeText(phrase);
+                      }}
+                    > 
+                      <ListItemText primary={phrase} /><ContentCopyIcon></ContentCopyIcon>
+                    </ListItem>
+                    <Divider />
+                  </List>
+                );
+              })}
+          </Grid>
+          <Grid item xs={12} md={6}>
 
-      {!profileQuery.loading &&
+          {!profileQuery.loading &&
         profileQuery?.data?.profile?.translatedPhrases.map((phrase) => {
           const splitted = phrase.split("@@");
           const translation = splitted[0];
           const lang = splitted[1];
           return (
             <List sx={style} component="nav" aria-label="mailbox folders">
-              <ListItem button>
+              <ListItem button onClick={() => activateTextToSpeech(lang, translation)}>
                 <ListItemText
                   primary={translation}
-                  onClick={() => activateTextToSpeech(lang, translation)}
-                />
+                /><VolumeUpIcon></VolumeUpIcon>
               </ListItem>
               <Divider />
             </List>
           );
         })}
+          </Grid>
+      </Grid>
+
+
+      {(profileQuery?.data?.profile?.translatedPhrases.length > 0 && <div style={{textAlign: "center", marginTop: "10px"}}><Button onClick={() => clearAll(userText)} variant="contained">
+          Clear History
+      </Button></div>)}
+      
+
+      
     </div>
   );
 };

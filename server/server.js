@@ -2,7 +2,7 @@ require("dotenv").config({ path: "config.env" });
 // console.log(process.env)
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-const { authenticate } = require("./middleware/authenticate");
+const { authenticate } = require("../middleware/authenticate");
 const path = require("path");
 const throttle = require("express-rate-limit");
 
@@ -58,11 +58,9 @@ app.post("/api/translate", limiter, authenticate, async (req, res) => {
   }
 
   if (userText.length > 500) {
-    return res
-      .status(400)
-      .json({
-        msg: "Translation is too long! Try translating a shorter phrase",
-      });
+    return res.status(400).json({
+      msg: "Translation is too long! Try translating a shorter phrase",
+    });
   }
 
   try {
@@ -73,35 +71,40 @@ app.post("/api/translate", limiter, authenticate, async (req, res) => {
   }
 });
 
-app.get("/api/get-speech-token", async (req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
-  const speechKey = process.env.SPEECH_KEY;
-  const speechRegion = process.env.SPEECH_REGION;
+app.get(
+  "/api/get-speech-token",
+  limiter,
+  authenticate,
+  async (req, res, next) => {
+    res.setHeader("Content-Type", "application/json");
+    const speechKey = process.env.SPEECH_KEY;
+    const speechRegion = process.env.SPEECH_REGION;
 
-  if (!speechKey || !speechRegion) {
-    res
-      .status(400)
-      .send("You forgot to add your speech key or region to the .env file.");
-  } else {
-    const headers = {
-      headers: {
-        "Ocp-Apim-Subscription-Key": speechKey,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    };
+    if (!speechKey || !speechRegion) {
+      res
+        .status(400)
+        .send("You forgot to add your speech key or region to the .env file.");
+    } else {
+      const headers = {
+        headers: {
+          "Ocp-Apim-Subscription-Key": speechKey,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      };
 
-    try {
-      const tokenResponse = await axios.post(
-        `https://${speechRegion}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
-        null,
-        headers
-      );
-      res.send({ token: tokenResponse.data, region: speechRegion });
-    } catch (err) {
-      res.status(401).send("There was an error authorizing your speech key.");
+      try {
+        const tokenResponse = await axios.post(
+          `https://${speechRegion}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
+          null,
+          headers
+        );
+        res.send({ token: tokenResponse.data, region: speechRegion });
+      } catch (err) {
+        res.status(401).send("There was an error authorizing your speech key.");
+      }
     }
   }
-});
+);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/src/index.html"));
