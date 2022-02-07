@@ -47,12 +47,11 @@ const Translator = () => {
 
   const history = useHistory();
   // is user is not authenticated, redirect to /login
-  
 
   const activateTranslate = async (inputText) => {
     if (!Auth.loggedIn()) {
       history.push("/login");
-      return
+      return;
     }
     console.log(languageFrom, languageTo, Auth.getToken());
 
@@ -177,7 +176,7 @@ const Translator = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
-                    <IconButton sx={{    marginTop: "-65px"}}>
+                    <IconButton sx={{ marginTop: "-65px" }}>
                       <MicIcon
                         fontSize="large"
                         onClick={sttFromMic}
@@ -218,6 +217,7 @@ const Translator = () => {
                 paddingTop: "27px",
                 paddingRight: "40px",
                 minHeight: "125px",
+                maxHeight: "125px",
                 bgcolor: (theme) =>
                   theme.palette.mode === "dark" ? "#101010" : "#fff",
                 color: (theme) =>
@@ -229,6 +229,7 @@ const Translator = () => {
                 fontSize: "1rem",
                 fontWeight: "560",
               }}
+              style={{ overflow: "hidden", overflow: "scroll" }}
             >
               <Box
                 id="phraseDiv"
@@ -236,29 +237,28 @@ const Translator = () => {
                 minHeight="30px"
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between"
+                  justifyContent: "space-between",
                 }}
                 // defaultValue="Translated text..."
                 // fontColor="black"
               >
-                <div>
-                {translationOutput}
+                <div>{translationOutput}</div>
+                <div
+                  style={{
+                    marginTop: "-15px",
+                  }}
+                >
+                  <IconButton>
+                    <VolumeUpIcon
+                      id="startSpeakTextAsyncButton"
+                      color="primary"
+                      fontSize="large"
+                      onClick={() =>
+                        activateTextToSpeech(languageTo, translationOutput)
+                      }
+                    />
+                  </IconButton>
                 </div>
-                <div style={{marginTop: "-15px"}}>
-                <IconButton>
-                  <VolumeUpIcon
-                   
-                    id="startSpeakTextAsyncButton"
-                    color="primary"
-                    fontSize="large"
-                    onClick={() =>
-                      activateTextToSpeech(languageTo, translationOutput)
-                    }
-                  />
-                </IconButton>
-                </div>
-                
-
               </Box>
             </Box>
             <Autocomplete
@@ -277,63 +277,68 @@ const Translator = () => {
               }}
             />
           </Grid>
-          
         </Grid>
       </Box>
 
-      <div style={{textAlign: "center"}}>     
-        <Button style={{marginTop: "10px", marginBottom: "20px"}} onClick={() => activateTranslate(userText)} variant="contained">
+      <div style={{ textAlign: "center" }}>
+        <Button
+          style={{ marginTop: "10px", marginBottom: "20px" }}
+          onClick={() => activateTranslate(userText)}
+          variant="contained"
+        >
           Translate
         </Button>
       </div>
 
       <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-                {!profileQuery.loading &&
-              profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
-                return (
-                  <List sx={style} component="nav" aria-label="mailbox folders">
-                    <ListItem
-                      button
-                      onClick={() => {
-                        navigator.clipboard.writeText(phrase);
-                      }}
-                    > 
-                      <ListItemText primary={phrase} /><ContentCopyIcon></ContentCopyIcon>
-                    </ListItem>
-                    <Divider />
-                  </List>
-                );
-              })}
-          </Grid>
-          <Grid item xs={12} md={6}>
-
+        <Grid item xs={12} md={6}>
           {!profileQuery.loading &&
-        profileQuery?.data?.profile?.translatedPhrases.map((phrase) => {
-          const splitted = phrase.split("@@");
-          const translation = splitted[0];
-          const lang = splitted[1];
-          return (
-            <List sx={style} component="nav" aria-label="mailbox folders">
-              <ListItem button onClick={() => activateTextToSpeech(lang, translation)}>
-                <ListItemText
-                  primary={translation}
-                /><VolumeUpIcon></VolumeUpIcon>
-              </ListItem>
-              <Divider />
-            </List>
-          );
-        })}
-          </Grid>
+            profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
+              return (
+                <List sx={style} component="nav" aria-label="mailbox folders">
+                  <ListItem
+                    button
+                    onClick={() => {
+                      navigator.clipboard.writeText(phrase);
+                    }}
+                  >
+                    <ListItemText primary={phrase} />
+                    <ContentCopyIcon></ContentCopyIcon>
+                  </ListItem>
+                  <Divider />
+                </List>
+              );
+            })}
+        </Grid>
+        <Grid item xs={12} md={6}>
+          {!profileQuery.loading &&
+            profileQuery?.data?.profile?.translatedPhrases.map((phrase) => {
+              const splitted = phrase.split("@@");
+              const translation = splitted[0];
+              const lang = splitted[1];
+              return (
+                <List sx={style} component="nav" aria-label="mailbox folders">
+                  <ListItem
+                    button
+                    onClick={() => activateTextToSpeech(lang, translation)}
+                  >
+                    <ListItemText primary={translation} />
+                    <VolumeUpIcon></VolumeUpIcon>
+                  </ListItem>
+                  <Divider />
+                </List>
+              );
+            })}
+        </Grid>
       </Grid>
 
-
-      {(profileQuery?.data?.profile?.translatedPhrases.length > 0 && <div style={{textAlign: "center", marginTop: "10px"}}><Button onClick={() => clearAll(userText)} variant="contained">
-          Clear History
-      </Button></div>)}
-      
-
-      
+      {profileQuery?.data?.profile?.translatedPhrases.length > 0 && (
+        <div style={{ textAlign: "center", marginTop: "10px" }}>
+          <Button onClick={() => clearAll(userText)} variant="contained">
+            Clear History
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
