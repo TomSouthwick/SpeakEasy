@@ -53,7 +53,7 @@ const Translator = () => {
       history.push("/login");
       return;
     }
-    console.log(languageFrom, languageTo, Auth.getToken());
+    // console.log(languageFrom, languageTo, Auth.getToken());
 
     // const auth = getToken() {
     //   return localStorage.getItem("id_token");
@@ -291,7 +291,12 @@ const Translator = () => {
       </div>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{ display: "flex", flexDirection: "column-reverse" }}
+        >
           {!profileQuery.loading &&
             profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
               return (
@@ -310,7 +315,12 @@ const Translator = () => {
               );
             })}
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{ display: "flex", flexDirection: "column-reverse" }}
+        >
           {!profileQuery.loading &&
             profileQuery?.data?.profile?.translatedPhrases.map((phrase) => {
               const splitted = phrase.split("@@");
