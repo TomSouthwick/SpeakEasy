@@ -10,10 +10,10 @@
  <br />
 
 <div align="center">
-<img src="assets/readme.png">
+<img src="./client/assets/readme.png">
 </div>
 
-<h3 align="center">Speak Easy</h3>
+<h1 align="center">Speak Easy</h1>
 
   <p align="center">
     Speak Easy is a dynamic app that allows a user to translate either their voice or written text into over 110 different languages! This app uses Microsoft Azure's Cognitive Speech SDK! The App allows for recent phrases and inputs to be stored within React, which allows the user to input their recent phrases to be translated out again into the language of their choosing. This lightweight mobile-friendly app is designed to be accessed from around the world in the hopes of removing communication barriers between visitors and their country of choosing! 
@@ -22,7 +22,9 @@
     <br />
     <br />
     ·
-    <a href="https://youtu.be/2JY0Rd7fpaw">View Demo</a>
+    <a href="">View Demo</a>
+    ·
+    <a href="https://glacial-forest-03903.herokuapp.com"><strong>View App</strong></a>
     ·
     <a href="https://github.com/TomSouthwick/SpeakEasy">Report Bug</a>
     ·
@@ -30,7 +32,7 @@
   </p>
 </div>
 <div align="center">
-<img src="assets/demo.gif" width="90%" height="100%">
+<img src="./client/assets/giphcapture.gif" width="90%" height="100%">
 </div>
  <br />
  <br />
@@ -71,16 +73,15 @@
 
  <br />
 
-<img src="assets/screenshot2.png" width="100%" height="750">
  <br />
 
-This project was desgined so that users can translate from one language to another easily. The user can either type or speak into the microphone in order to present the required text to be translated. Once the text is translated, it then can either be read or spoken allowed in the native voice of that selected language. Using the Cognitive Speech SDK from Azure, the app has the ability to have each language spoken or interpreted natively. This provides a user with a unique feature to hear the translated statement spoken in the desired language by someone who is fluent in that language. The requests to the server can only be made with a logged in User.
+This project was designed so that users can translate from one language to another easily. The user can either type or speak into the microphone in order to present the required text to be translated. Once the text is translated, it then can either be read or spoken allowed in the native voice of that selected language. Using the Cognitive Speech SDK from Azure, the app has the ability to have each language spoken or interpreted natively. This provides a user with a unique feature to hear the translated statement spoken in the desired language by someone who is fluent in that language. The requests to the server can only be made with a logged in User.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
 
-- [Cognitive Speech Services](https://azure.microsoft.com/en-au/services/cognitive-services/speech-services/)
+- [Cognitive Speech Services (Azure)](https://azure.microsoft.com/en-au/services/cognitive-services/speech-services/)
 - [Material-UI](https://mui.com/)
 - [GraphQL](https://graphql.org/)
 - [Express](https://expressjs.com/)
@@ -120,7 +121,11 @@ Ensure that VS Code has the required languages inc. JS, Express, and React with 
 
 ## Usage
 
-_For more examples, please refer to the [Documentation](https://github.com/TomSouthwick/Team-Profile-Generator)_
+1. Create an Account or Login
+
+2. Translate away!
+
+_For more examples, please refer to the [Documentation](https://github.com/TomSouthwick/SpeakEasy)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -128,14 +133,16 @@ _For more examples, please refer to the [Documentation](https://github.com/TomSo
 
 ## Roadmap
 
-- ✅ Creating a functioning inquirer prompt.
-- ✅ Creating and extending classes as a property.
-- ✅ Linking answers into a dynamic html element.
-  - ✅ html generator is vanilla and does not use any frameworks.
-- ✅ Creating and writing testing methods.
-  - ✅ Passing all the testing methods.
+- ✅ IP generation after market research
+- ✅ Creating Azure connection
+- ✅ Designing database structure and UI structure
+- ✅ Implemented authentication
+- ✅ Creating text to speech, translation API and speech to text routes
+  - ✅ Securing individual routes
+- ✅ Styled UI and created a mobile responsive app
+- ✅ Integrated into Heroku
 
-See the [open issues](https://github.com/TomSouthwick/Team-Profile-Generator/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/TomSouthwick/SpeakEasy/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -155,7 +162,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Tom Southwick - [Linkedin](https://linkedin.com/in/tomsouthwick)
 
-Project Link: [https://github.com/TomSouthwick/Team-Profile-Generator](https://github.com/TomSouthwick/SpeakEasy)
+Project Link: [https://github.com/TomSouthwick/SpeakEasy](https://github.com/TomSouthwick/SpeakEasy)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -172,7 +179,7 @@ Project Link: [https://github.com/TomSouthwick/Team-Profile-Generator](https://g
 
 [issues-shield]: https://img.shields.io/github/issues/TomSouthwick/SpeakEasy.svg?style=for-the-badge
 [issues-url]: https://github.com/TomSouthwick/SpeakEasy/issues
-[license-shield]: https://img.shields.io/github/license/TomSouthwick/SpeakEasy.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/TomSouthwick/Team-Profile-Generator.svg?style=for-the-badge
 [license-url]: https://github.com/TomSouthwick/SpeakEasy/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/tomsouthwick
