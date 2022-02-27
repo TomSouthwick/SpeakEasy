@@ -110,6 +110,14 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/src/index.html"));
 });
 
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/src/index.html"));
+});
+
+app.get("/signup", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/src/index.html"));
+});
+
 db.once("open", () => {
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
