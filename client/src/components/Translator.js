@@ -229,7 +229,7 @@ const Translator = () => {
                 fontSize: "1rem",
                 fontWeight: "560",
               }}
-              style={{ overflow: "hidden", overflow: "scroll" }}
+              style={{ overflow: "hidden", overflow: "overlay" }}
             >
               <Box
                 id="phraseDiv"
