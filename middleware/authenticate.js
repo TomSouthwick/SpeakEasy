@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const secret = process.env.ACCESS_TOKEN_SECRET;
-const expiration = "2h";
+const expiration = "2hrs";
 
 module.exports = {
   authenticate: function (req, res, next) {
@@ -12,6 +12,7 @@ module.exports = {
     }
 
     if (!token) {
+      res.redirect("/login");
       return res.status(401).json({ msg: "You must be logged in to continue" });
     }
 

@@ -64,7 +64,7 @@ const Translator = () => {
     });
     // addInputPhrase(inputText)
 
-    axios
+    return axios
       .post("/api/translate/", {
         fromLang: languageFrom,
         toLang: languageTo,
@@ -80,6 +80,11 @@ const Translator = () => {
         });
         // store the translated text to db
         setTranslationOutput(response.data.text);
+
+        return {
+          translated: response.data.text,
+          languageTo,
+        };
       })
       .catch(function (error) {
         console.log(error);
@@ -145,6 +150,11 @@ const Translator = () => {
       },
     },
   });
+
+  async function speakUpMate(userText) {
+    const { translated, languageTo } = await activateTranslate(userText);
+    await activateTextToSpeech(languageTo, translated);
+  }
 
   const MyThemeComponent = styled("div")(({ theme }) => ({
     color: theme.palette.primary.contrastText,
@@ -248,13 +258,18 @@ const Translator = () => {
                     marginTop: "-15px",
                   }}
                 >
+                  {/* Wrap inside an audio-tag */}
+                  <audio id="speakup-mate"></audio>
                   <IconButton>
                     <VolumeUpIcon
                       id="startSpeakTextAsyncButton"
                       color="primary"
                       fontSize="large"
-                      onClick={() =>
-                        activateTextToSpeech(languageTo, translationOutput)
+                      onClick={
+                        () => {
+                          document.getElementById("speakup-mate").play();
+                        }
+                        // activateTextToSpeech(languageTo, translationOutput)
                       }
                     />
                   </IconButton>
@@ -283,7 +298,7 @@ const Translator = () => {
       <div style={{ textAlign: "center" }}>
         <Button
           style={{ marginTop: "10px", marginBottom: "20px" }}
-          onClick={() => activateTranslate(userText)}
+          onClick={() => speakUpMate(translationOutput)}
           variant="contained"
         >
           Translate
@@ -330,7 +345,13 @@ const Translator = () => {
                 <List sx={style} component="nav" aria-label="mailbox folders">
                   <ListItem
                     button
-                    onClick={() => activateTextToSpeech(lang, translation)}
+                    onClick={async () => {
+                      const audio = document.getElementById("speakup-mate");
+                      audio.src = "";
+                      await activateTextToSpeech(lang, translation);
+                      console.log("black btnn");
+                      audio.play();
+                    }}
                   >
                     <ListItemText primary={translation} />
                     <VolumeUpIcon></VolumeUpIcon>

@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 const secret = process.env.ACCESS_TOKEN_SECRET;
-const expiration = "2h";
+const expiration = "2hrs";
 
 module.exports = {
   authMiddleware: function ({ req }) {
+    console.log("auth middlwar");
     let token = req.body.token || req.query.token || req.headers.authorization;
 
     if (req.headers.authorization) {
@@ -12,6 +13,8 @@ module.exports = {
     }
 
     if (!token) {
+      // console.log("no token");
+
       return req;
     }
 

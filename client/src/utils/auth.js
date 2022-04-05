@@ -5,7 +5,11 @@ import decode from "jwt-decode";
 class AuthService {
   // get user data from JSON web token by decoding it
   getProfile() {
-    return decode(this.getToken());
+    try {
+      return decode(this.getToken());
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   // return `true` or `false` if token exists (does not verify if it's expired yet)

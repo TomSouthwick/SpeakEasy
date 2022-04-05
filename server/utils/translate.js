@@ -8,44 +8,69 @@ const endpoint = "https://api.cognitive.microsofttranslator.com/";
 const location = "australiaeast";
 
 // translate('en', 'fr', 'heloo tom');
-async function translate(fromLang, toLang, text){
-
-    const result = await new Promise((res, rej) => {
-      axios({
-        baseURL: endpoint,
-        url: "/translate",
-        method: "post",
-        headers: {
-          "Ocp-Apim-Subscription-Key": subscriptionKey,
-          "Ocp-Apim-Subscription-Region": location,
-          "Content-type": "application/json",
-          "X-ClientTraceId": uuidv4().toString(),
+async function translate(fromLang, toLang, text) {
+  const result = await new Promise((res, rej) => {
+    axios({
+      baseURL: endpoint,
+      url: "/translate",
+      method: "post",
+      headers: {
+        "Ocp-Apim-Subscription-Key": subscriptionKey,
+        "Ocp-Apim-Subscription-Region": location,
+        "Content-type": "application/json",
+        "X-ClientTraceId": uuidv4().toString(),
+      },
+      params: {
+        "api-version": "3.0",
+        from: fromLang,
+        to: [toLang],
+      },
+      data: [
+        {
+          text: text,
         },
-        params: {
-          "api-version": "3.0",
-          from: fromLang,
-          to: [toLang],
-        },
-        data: [
-          {
-            text: text,
-          },
-        ],
-        responseType: "json",
-      })
-      .then(function (response) {
-          res(response.data[0].translations[0])
-        // JSON.stringify(response.data, null, 4));
-      }).catch(function (error) {
-
-        console.error(error.message)
-        rej(error);
-      });;
+      ],
+      responseType: "json",
     })
+      .then(function (response) {
+        res(response.data[0].translations[0]);
+        // JSON.stringify(response.data, null, 4));
+      })
+      .catch(function (error) {
+        console.error(error.message);
+        rej(error);
+      });
+  });
 
-    return result;
-    
+  return result;
 }
+
+// async function upload(file: File){
+//   console.log({file});
+
+//   const buffer = await file.arrayBuffer();
+//   console.log({buffer});
+
+//   playAudio(buffer);
+
+// }
+
+// function playAudio(arrayBuffer: ArrayBuffer){
+//   const audioElement = document.createElement('audio');
+
+//   const blob = new Blob([arrayBuffer], { type: "audio/mp3" });
+
+//   const url = window.URL.createObjectURL(blob);
+
+//   audioElement.src = url;
+//   audioElement.play();
+
+// }
+
+// onMounted(() => {
+//   const arrayBuffer = [];
+
+// });
 
 // const m = async () => {
 //   const result = await translate("en", "fr", "hello")
@@ -54,8 +79,6 @@ async function translate(fromLang, toLang, text){
 // }
 // m()
 
-
-
 module.exports = {
-    translate
-}
+  translate,
+};

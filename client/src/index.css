@@ -1714,3 +1714,9 @@ label form [type="radio"] {
     align-content: center;
   }
 }
+
+@media screen and (min-width: 700px) {
+  .login-wrapper {
+    max-width: 60%;
+  }
+}

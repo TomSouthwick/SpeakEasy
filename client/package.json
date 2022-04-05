@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.25.0",
     "graphql": "^15.4.0",
+    "howler": "^2.2.3",
     "jwt-decode": "^3.1.2",
     "microsoft-cognitiveservices-speech-sdk": "^1.20.0",
     "react": "^17.0.1",

@@ -42,7 +42,7 @@ const Login = (props) => {
 
   return (
     <main className="flex-row justify-center mb-4">
-      <div className="col-12 col-lg-10" style={{ maxWidth: "60%" }}>
+      <div className="col-12 col-lg-10 login-wrapper">
         <div className="card">
           <h4
             style={{ borderRadius: "12px 12px 0 0" }}
