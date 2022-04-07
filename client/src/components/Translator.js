@@ -12,6 +12,7 @@ import IconButton, { IconButtonClasses } from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -155,6 +156,8 @@ const Translator = () => {
     const { translated, languageTo } = await activateTranslate(userText);
     await activateTextToSpeech(languageTo, translated);
   }
+
+  const [selectedHistory, setSelectedHistory] = useState(null);
 
   const MyThemeComponent = styled("div")(({ theme }) => ({
     color: theme.palette.primary.contrastText,
@@ -337,29 +340,46 @@ const Translator = () => {
           style={{ display: "flex", flexDirection: "column-reverse" }}
         >
           {!profileQuery.loading &&
-            profileQuery?.data?.profile?.translatedPhrases.map((phrase) => {
-              const splitted = phrase.split("@@");
-              const translation = splitted[0];
-              const lang = splitted[1];
-              return (
-                <List sx={style} component="nav" aria-label="mailbox folders">
-                  <ListItem
-                    button
-                    onClick={async () => {
-                      const audio = document.getElementById("speakup-mate");
-                      audio.src = "";
-                      await activateTextToSpeech(lang, translation);
-                      console.log("black btnn");
-                      audio.play();
-                    }}
-                  >
-                    <ListItemText primary={translation} />
-                    <VolumeUpIcon></VolumeUpIcon>
-                  </ListItem>
-                  <Divider />
-                </List>
-              );
-            })}
+            profileQuery?.data?.profile?.translatedPhrases.map(
+              (phrase, index) => {
+                const splitted = phrase.split("@@");
+                const translation = splitted[0];
+                const lang = splitted[1];
+                return (
+                  <List sx={style} component="nav" aria-label="mailbox folders">
+                    <ListItemButton selected={selectedHistory === index} button>
+                      <ListItemText primary={translation} />
+                      {selectedHistory === index && (
+                        <IconButton
+                          onClick={() => {
+                            const audio =
+                              document.getElementById("speakup-mate");
+                            audio.play();
+                          }}
+                        >
+                          <VolumeUpIcon></VolumeUpIcon>
+                        </IconButton>
+                      )}
+                      {selectedHistory !== index && (
+                        <Button
+                          onClick={async () => {
+                            setSelectedHistory(index);
+                            const audio =
+                              document.getElementById("speakup-mate");
+                            audio.src = "";
+                            await activateTextToSpeech(lang, translation);
+                            console.log("black btnn");
+                          }}
+                        >
+                          "Tap To Load"
+                        </Button>
+                      )}
+                    </ListItemButton>
+                    <Divider />
+                  </List>
+                );
+              }
+            )}
         </Grid>
       </Grid>
 
