@@ -33,6 +33,21 @@ import { QUERY_SINGLE_PROFILE } from "../utils/queries";
 import Auth from "../utils/auth";
 import { getTokenOrRefresh } from "../utils/token";
 
+function iOS() {
+  return (
+    [
+      "iPad Simulator",
+      "iPhone Simulator",
+      "iPod Simulator",
+      "iPad",
+      "iPhone",
+      "iPod",
+    ].includes(navigator.platform) ||
+    // iPad on iOS 13 detection
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  );
+}
+
 const Translator = () => {
   const [addInputPhrase, { error: inputPhraseError }] =
     useMutation(ADD_INPUT_PHRASE);
@@ -301,7 +316,7 @@ const Translator = () => {
       <div style={{ textAlign: "center" }}>
         <Button
           style={{ marginTop: "10px", marginBottom: "20px" }}
-          onClick={() => speakUpMate(translationOutput)}
+          onClick={() => speakUpMate(userText)}
           variant="contained"
         >
           Translate
@@ -349,7 +364,7 @@ const Translator = () => {
                   <List sx={style} component="nav" aria-label="mailbox folders">
                     <ListItemButton selected={selectedHistory === index} button>
                       <ListItemText primary={translation} />
-                      {selectedHistory === index && (
+                      {selectedHistory === index && iOS() && (
                         <IconButton
                           onClick={() => {
                             const audio =
@@ -357,10 +372,10 @@ const Translator = () => {
                             audio.play();
                           }}
                         >
-                          <VolumeUpIcon></VolumeUpIcon>
+                          <VolumeUpIcon color="primary"></VolumeUpIcon>
                         </IconButton>
                       )}
-                      {selectedHistory !== index && (
+                      {(selectedHistory !== index || !iOS()) && (
                         <Button
                           onClick={async () => {
                             setSelectedHistory(index);
@@ -371,7 +386,11 @@ const Translator = () => {
                             console.log("black btnn");
                           }}
                         >
-                          "Tap To Load"
+                          {iOS() ? (
+                            "Tap To Load"
+                          ) : (
+                            <VolumeUpIcon color="primary"></VolumeUpIcon>
+                          )}
                         </Button>
                       )}
                     </ListItemButton>
