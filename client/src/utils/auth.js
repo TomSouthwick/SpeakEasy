@@ -16,7 +16,7 @@ class AuthService {
   loggedIn() {
     const token = this.getToken();
 
-    // check if token has exp or not
+    // TODO: check if token has exp or not
 
     return token ? true : false;
   }

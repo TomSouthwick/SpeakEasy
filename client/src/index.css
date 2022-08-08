@@ -1715,8 +1715,18 @@ label form [type="radio"] {
   }
 }
 
+@media screen and (max-width: 700px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
 @media screen and (min-width: 700px) {
   .login-wrapper {
     max-width: 60%;
+  }
+
+  .hide-on-desktop {
+    display: none !important;
   }
 }

@@ -78,6 +78,7 @@ const Translator = () => {
     const data = await addInputPhrase({
       variables: { profileId, inputPhrase: inputText },
     });
+    setRecentlyTranslatedLanguage(languageTo);
     // addInputPhrase(inputText)
 
     return axios
@@ -90,7 +91,8 @@ const Translator = () => {
       .then(async function (response) {
         console.log(response);
 
-        const translated = response.data.text + "@@" + languageTo;
+        const translated =
+          response.data.text + "@@" + languageTo + "@@" + inputText;
         const translatedData = await addTranslatedPhrase({
           variables: { profileId, translatedPhrase: translated },
         });
@@ -105,6 +107,26 @@ const Translator = () => {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const convertLanguageToObj = (langArr) => {
+    const obj = {};
+    langArr.forEach((d) => {
+      console.log(d);
+      const splitted = d.split("@@");
+      console.log(splitted);
+
+      const lang = splitted[1];
+      const outputPhrase = splitted[0];
+      const inputPhrase = splitted[2];
+
+      if (obj[lang]) {
+        obj[lang].push([outputPhrase, inputPhrase]);
+      } else {
+        obj[lang] = [[outputPhrase, inputPhrase]];
+      }
+    });
+    return obj;
   };
 
   const sttFromMic = async (test) => {
@@ -186,6 +208,11 @@ const Translator = () => {
     maxWidth: 360,
     bgcolor: "background.paper",
   };
+
+  const [hoveredPhrase, setHoveredPhrase] = useState("deez");
+
+  const [recentlyTranslatedLanguage, setRecentlyTranslatedLanguage] =
+    useState("");
 
   return (
     <div>
@@ -329,13 +356,21 @@ const Translator = () => {
           xs={12}
           md={6}
           style={{ display: "flex", flexDirection: "column-reverse" }}
+          className="hide-on-mobile"
         >
           {!profileQuery.loading &&
             profileQuery?.data?.profile?.inputPhrases.map((phrase) => {
               return (
                 <List sx={style} component="nav" aria-label="mailbox folders">
                   <ListItem
+                    style={{
+                      background:
+                        hoveredPhrase === phrase ? "rgb(240 240 240)" : "white",
+                      borderRadius: "8px",
+                    }}
                     button
+                    onMouseEnter={() => setHoveredPhrase(phrase)}
+                    onMouseLeave={() => setHoveredPhrase("")}
                     onClick={() => {
                       navigator.clipboard.writeText(phrase);
                     }}
@@ -355,6 +390,104 @@ const Translator = () => {
           style={{ display: "flex", flexDirection: "column-reverse" }}
         >
           {!profileQuery.loading &&
+            profileQuery?.data?.profile?.translatedPhrases &&
+            Object.entries(
+              convertLanguageToObj(
+                profileQuery?.data?.profile?.translatedPhrases
+              )
+            )
+              .sort((l) => (l[0] !== recentlyTranslatedLanguage ? -1 : 0))
+              .map(([lang, phrases]) => {
+                return (
+                  <div
+                    style={{
+                      border: "1px solid #e0e0e0",
+                      borderRadius: "8px",
+                      fontWeight: "560",
+                      color: "#424242",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "end",
+                        paddingRight: "5px",
+                        paddingTop: "5px",
+                      }}
+                    >
+                      <span>{lang}</span>
+                    </div>
+                    {phrases.reverse().map((phrase, index) => {
+                      // const splitted = phrase.split("@@");
+                      // const translation = splitted[0];
+                      // const lang = splitted[1];
+                      return (
+                        <List
+                          sx={style}
+                          component="nav"
+                          aria-label="mailbox folders"
+                          onMouseEnter={() => setHoveredPhrase(phrase[1])}
+                          onMouseLeave={() => setHoveredPhrase("")}
+                          style={{
+                            background:
+                              hoveredPhrase === phrase[1]
+                                ? "rgb(240 240 240)"
+                                : "white",
+                            borderRadius: "8px",
+                          }}
+                        >
+                          <ListItem
+                            className="hide-on-desktop"
+                            // style={{ display: "block" }}
+                            onClick={() => {
+                              navigator.clipboard.writeText(phrase[1]);
+                            }}
+                          >
+                            <ListItemText>{phrase[1]}</ListItemText>
+                            <ContentCopyIcon></ContentCopyIcon>
+                          </ListItem>
+
+                          <ListItem>
+                            <ListItemText primary={phrase[0]} />
+                            {selectedHistory === index && iOS() && (
+                              <IconButton
+                                onClick={() => {
+                                  const audio =
+                                    document.getElementById("speakup-mate");
+                                  audio.play();
+                                }}
+                              >
+                                <VolumeUpIcon color="primary"></VolumeUpIcon>
+                              </IconButton>
+                            )}
+                            {(selectedHistory !== index || !iOS()) && (
+                              <Button
+                                onClick={async () => {
+                                  setSelectedHistory(index);
+                                  const audio =
+                                    document.getElementById("speakup-mate");
+                                  audio.src = "";
+                                  await activateTextToSpeech(lang, phrase[0]);
+                                  console.log("black btnn");
+                                }}
+                              >
+                                {iOS() ? (
+                                  "Audio"
+                                ) : (
+                                  <VolumeUpIcon color="primary"></VolumeUpIcon>
+                                )}
+                              </Button>
+                            )}
+                          </ListItem>
+                          <Divider />
+                        </List>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+
+          {/* {!profileQuery.loading &&
             profileQuery?.data?.profile?.translatedPhrases.map(
               (phrase, index) => {
                 const splitted = phrase.split("@@");
@@ -398,7 +531,7 @@ const Translator = () => {
                   </List>
                 );
               }
-            )}
+            )} */}
         </Grid>
       </Grid>
 
